@@ -11,8 +11,7 @@ class ControladorClientes{
 		static public function ctrCrearCliente(){
 
 			if(isset($_POST["nuevoCliente"])){
-				if(preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["nuevoCliente"]) && 
-					preg_match('/^[0-9]+$/', $_POST["nuevoDocumentoId"])) {
+				if(preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["nuevoCliente"])){
 
 						$tabla = "clientes";
 
@@ -71,7 +70,86 @@ class ControladorClientes{
 
 										if(result.value){
 										
-											window.location = "categorias";
+											window.location = "clientes";
+
+										}
+
+									});
+						
+
+							</script>';
+						
+
+						
+						}
+
+				
+			}
+		}
+
+		static public function ctrCrearClienteBitacora(){
+
+			if(isset($_POST["nuevoCliente"])){
+				if(preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["nuevoCliente"])){
+
+						$tabla = "clientes";
+
+						$datos = array("nuevoCliente" => $_POST["nuevoCliente"],
+										"nuevoRFC"=>$_POST["nuevoRFC"],
+							           "nuevoDocumentoId" => $_POST["nuevoDocumentoId"],
+							           "nuevoEmail" => $_POST["nuevoEmail"],
+							           "nuevoTelefono" => $_POST["nuevoTelefono"],
+							           "nuevoDireccion" => $_POST["nuevoDireccion"],
+							           "nuevaFechaNacimiento" => $_POST["nuevaFechaNacimiento"]
+							           );
+
+						$respuesta = ModeloClientes::mdlCrearCliente($tabla, $datos);
+						/*$respuesta="ok";
+						*/
+						if($respuesta == "ok"){
+
+								echo '<script>
+
+									swal({
+
+										type: "success",
+										title: "El cliente se guardo correctamente!",
+										showConfirmButton: true,
+										confirmButtonText: "Cerrar"
+										
+
+									}).then((result)=>{
+
+										if(result.value){
+										
+											window.location = "mail";
+
+										}
+
+									});
+						
+
+							</script>';
+							}
+						
+					}
+					else{
+
+								echo '<script>
+
+									swal({
+
+										type: "error",
+										title: "El Cliente no puede ir Vacio o llevar caracteres especiales!",
+										showConfirmButton: true,
+										confirmButtonText: "Cerrar",
+										closeOnConfirm: false
+
+									}).then((result)=>{
+
+										if(result.value){
+										
+											window.location = "mail";
 
 										}
 
@@ -110,8 +188,7 @@ class ControladorClientes{
 		static public function ctrEditarCliente(){
 
 			if(isset($_POST["editarCliente"])){
-				if(preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["editarCliente"]) && 
-					preg_match('/^[0-9]+$/', $_POST["editarDocumentoId"])) {
+				if(preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["editarCliente"])) {
 
 
 						$tabla = "clientes";

@@ -17,6 +17,14 @@ class ControladorProductos{
 		return $respuesta;
 	}
 
+	static public function ctrMostrarServicios($item, $valor,$orden){
+		$tabla= "productos";
+		
+		$respuesta = ModeloProductos::mdlMostrarServicios($tabla, $item, $valor, $orden);
+
+		return $respuesta;
+	}
+
 	/*=============================
 		Crear Productos
 	=============================*/
@@ -335,7 +343,82 @@ class ControladorProductos{
 		
 	}
 
+	static public function ctrAbastecerProductos(){
+		
+		if(isset($_POST["editarDescripcion"])){
+			
+			if(preg_match('/^[0-9]+$/', $_POST["editarStock"]) &&
+				preg_match('/^[0-9.]+$/', $_POST["editarPrecioVenta"])
+				){
+				
+					$tabla = "productos"; 
 
+					$datos = array("stock" => $_POST["editarStock"],
+					              "precio_venta" => $_POST["editarPrecioVenta"],
+								  "id_usuario" => $_SESSION["id"],
+					              "id" => $_POST["idproducto"]
+					           );
+					
+							   
+
+					$respuesta = ModeloProductos::MdlAbastecerProductos($tabla, $datos);
+					
+					if($respuesta == "ok"){
+
+
+						echo '<script>
+
+							swal({
+
+								type: "success",
+								title: "El Inventario se guardo correctamente!",
+								showConfirmButton: true,
+								confirmButtonText: "Cerrar"
+								
+
+							}).then((result)=>{
+
+								if(result.value){
+								
+									window.location = "abastecerInventario";
+
+								}
+
+							});
+				
+
+							</script>';
+					}
+				}
+				else{
+					echo '<script>
+
+							swal({
+
+								type: "error",
+								title: "No puede ir Vacio o llevar caracteres especiales!",
+								showConfirmButton: true,
+								confirmButtonText: "Cerrar"
+								
+
+							}).then((result)=>{
+
+								if(result.value){
+								
+									window.location = "abastecerInventario";
+
+								}
+
+							});
+				
+
+					</script>';
+			}
+
+		
+		}
+		
+	}
 	  /*====================================
 		Borrar PRoductos
 	 =====================================*/

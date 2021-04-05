@@ -70,12 +70,13 @@ $('.tablasVentas').DataTable( {
        Agregar Producto Ventas
   ============================== */
 
-  $(".tablasVentas tbody").on("click", "button.agregarProducto", function(){
+  $(".tablasVentas tbody").on("click", "button.agregarVProducto", function(){
 
   		var idProducto = $(this).attr("idProducto");
   		
+		  console.log("respuesta",idProducto);
 
-  		$(this).removeClass("btn-primary agregarProducto");
+  		$(this).removeClass("btn-primary agregarVProducto");
 
   		$(this).addClass("btn-default");
 
@@ -92,6 +93,7 @@ $('.tablasVentas').DataTable( {
 		dataType: "json",
 		success:function(respuesta){
 			
+			console.log("respuesta",respuesta);
 			var descripcion = respuesta["descripcion"];
 			var stock = respuesta["stock"];
 			var precio = respuesta["precio_venta"];
@@ -424,7 +426,7 @@ function sumarTotalPreciosVenta(){
 	var precioItem = $(".nuevoPrecioProductoVenta");
 	console.log('precioItem',precioItem);
 	var arraySumaPrecio = [];  
-console.log('2',2);
+//
 	for(var i = 0; i < precioItem.length; i++){
 
 		 arraySumaPrecio.push(Number($(precioItem[i]).val()));
@@ -770,4 +772,85 @@ $(".daterangepicker .ranges li").on("click", function(){
 
 		window.location = "index.php?ruta=ventas&fechaInicial="+fechaInicial+"&fechaFinal="+fechaFinal;
 	}
-})
+});
+
+       /* =============================
+      btnEditarStatus
+  ============================== */
+  $(".btnStatusPago").click(function(){
+
+	var idServicio= $(this).attr("idServicio");
+  
+  	console.log("respuesta",idServicio);
+	
+	$("#editarIdServicio").val(idServicio);
+
+});
+
+   /*=============================================
+				BORRAR VENTA
+	=============================================*/
+	$(".tablas").on("click", ".btnEliminarServicio", function(){
+
+		var idVenta = $(this).attr("EliminarServicio");
+	  
+		swal({
+			  title: '¿Está seguro de borrar el servicio?',
+			  text: "¡Si no lo está puede cancelar la accíón!",
+			  type: 'warning',
+			  showCancelButton: true,
+			  confirmButtonColor: '#3085d6',
+			  cancelButtonColor: '#d33',
+			  cancelButtonText: 'Cancelar',
+			  confirmButtonText: 'Si, borrar servicio!'
+			}).then(function(result){
+			  if (result.value) {
+				
+				  window.location = "index.php?ruta=servicios&idVenta="+idVenta;
+			  }
+	  
+		})
+	  
+	  });
+
+	  $(".tablas").on("click", ".btnImpimirDocto", function(){
+
+		
+		var codigo = $(this).attr("codigoVenta");
+		var tipoDocto = $(this).attr("tipoDocto");
+		console.log("respuesta", codigo);
+		console.log("respuesta", tipoDocto);
+		
+		// if (tipoDocto == "P") {
+		// 	//window.open("../../maintenanceAPP/api/PDF/pdfFile.php?Id="+id+"&Nomenclature="+nomenclatura,"_blanck");
+		// 	//window.open("vistas/modulos/pdfFile.php?Id="+id+"&Nomenclature='"+nomenclatura,"'_blanck");
+		// 	var path = "vistas/modulos/pdfFile.php?Id="+id+"&Nomenclature='"+nomenclatura+"'";
+		// 	var name = "Mantenimiento Preventivo";	
+		// 	 var prntWin = window.open();
+		// 		prntWin.document.write("<html><head><title>"+name+"</title><link rel='icon'  href='vistas/img/plantilla/icono-negro.png'></head><body>"
+		// 			+ '<embed width="100%" height="100%" name="plugin" src="'+ path+ '" '
+		// 			+ 'type="application/pdf" internalinstanceid="21"></body></html>');
+		// 		prntWin.document.close();
+		// }
+		if (tipoDocto == "C") {
+			//window.open("vistas/PDF/pdfFileCorrec.php?Id="+id+"&Nomenclature='"+nomenclatura,"'_blank");
+			var path = "vistas/modulos/reportes/cotizacionpdf.php?codigo="+codigo+"&tipoDocto='"+tipoDocto+"'";
+			var name = "Cotizacion";	
+			 var prntWin = window.open();
+				prntWin.document.write("<html><head><title>"+name+"</title><link rel='icon' href='vistas/img/plantilla/icono-negro.png'></head><body>"
+					+ '<embed width="100%" height="100%" name="plugin" src="'+ path+ '" '
+					+ 'type="application/pdf" internalinstanceid="21"></body></html>');
+				prntWin.document.close();	
+		}
+		// if (tipoDocto == "T") {
+		// 	//window.open("vistas/PDF/pdfFileTrouble.php?Id="+id,"_blank");
+		// 	var path = "vistas/modulos/pdfFileTrouble.php?Id="+id;
+		// 	var name = "Troubleshooting";	
+		// 	 var prntWin = window.open();
+		// 		prntWin.document.write("<html><head><title>"+name+"</title><link rel='icon' href='vistas/img/plantilla/icono-negro.png'></head><body>"
+		// 			+ '<embed width="100%" height="100%" name="plugin" src="'+ path+ '" '
+		// 			+ 'type="application/pdf" internalinstanceid="21"></body></html>');
+		// 		prntWin.document.close();	
+		// }
+	
+	})

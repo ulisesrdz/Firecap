@@ -66,6 +66,8 @@ $("#nuevaCategorias").change(function(){
 		dataType: "json",
 		success:function(respuesta){
 		
+			console.log('respuesta ',idCategoria);
+			
 			if(!respuesta){
 				var nuevoCodigo = idCategoria + "01";
 				$("#nuevoCodigo").val(nuevoCodigo);
@@ -295,3 +297,120 @@ $(".tablaProductos tbody").on("click", "button.btnEliminarProducto", function(){
 })
 
 
+
+$("#seleccionarCategoria").change(function() {
+	
+	// console.log($("#seleccionarCategoria").val());
+	var idCategoria = $("#seleccionarCategoria").val();
+
+	var datos = new FormData();
+	datos.append("Categoria", idCategoria);
+	//datos.append("idCategoria", idCategoria);
+	//console.log("repuesta ", idCategoria);
+	$.ajax({
+		url: "ajax/productos.ajax.php",
+		method: "POST",
+		data: datos,
+		cache: false,
+		contentType: false,
+		processData: false,
+		dataType: "json",
+		success:function(respuesta){
+		
+			console.log("repuesta", respuesta);
+			$(".tablasInv").dataTable().fnDestroy();
+			var table = $('.tablasInv').DataTable( {
+				destroy: true,
+                data : respuesta,
+				
+				columns : [
+					{"data" : "id"},		
+					{"data" : "codigo"},
+					{"data" : "descripcion"},
+					{"data" : "stock"},
+					{"data" : "precio_venta"},
+					{"render": function () {
+						return "<div class='btn-group'><button class='btn btn-warning btnProducto' data-toggle='modal' data-target='#modalEditarProducto'><i class='fa fa-pencil'></i></button></div>";
+					}},
+					
+						   ],
+				language: {
+
+					"sProcessing":     "Procesando...",
+					"sLengthMenu":     "Mostrar _MENU_ registros",
+					"sZeroRecords":    "No se encontraron resultados",
+					"sEmptyTable":     "Ningún dato disponible en esta tabla",
+					"sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_",
+					"sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0",
+					"sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+					"sInfoPostFix":    "",
+					"sSearch":         "Buscar:",
+					"sUrl":            "",
+					"sInfoThousands":  ",",
+					"sLoadingRecords": "Cargando...",
+					"oPaginate": {
+					"sFirst":    "Primero",
+					"sLast":     "Último",
+					"sNext":     "Siguiente",
+					"sPrevious": "Anterior"
+					},
+					"oAria": {
+						"sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+						"sSortDescending": ": Activar para ordenar la columna de manera descendente"
+					}
+				}
+            });
+			obtener_data(".tablasInv tbody",table);
+
+		}
+
+	})
+	// $("#tablasInv").dataTable().fnDestroy();
+	// $('.tablasInv').dataTable( {
+	// 	"destroy": true,
+	// 	"processData": false,
+    // "contentType": false,
+	// 	"ajax": {
+			
+	// 	  "url": "ajax/datable-productos.ajax.php",
+	// 	  "method": "POST",
+	// 	  "data": datos,
+	// 	  columns : [
+	// 		{"data" : "Codigo"},
+	// 		{"data" : "Descripcion"},
+	// 		{"data" : "Categoria"},
+	// 		{"data" : "Stock"}
+	// 	   ],
+	// 	  "deferRender": true,
+	// 	  "retrieve": true,
+	// 	  "processing": true,
+		  
+	// 	  }
+	//})
+});
+
+function reset(){
+    var table = document.getElementById('board-js');
+
+    table.innerHTML = '';
+}
+
+var obtener_data = function(tbody, table){
+	$(".btnProducto").click(function(){
+	//$(tbody).on("click","button.btnProducto", function(){
+		
+		data = table.row($(this).parents("tr")).data();
+		console.log("data ", data);
+		
+		if(data!=null){
+			var idProducto= $("#idproducto").val(data.id),
+			codigo = $("#editarCodigo").val(data.codigo),
+			descripcion = $("#editarDescripcion").val(data.descripcion),
+			stock = $("#editarStock").val(data.stock),
+			precio_venta = $("#editarPrecioVenta").val(data.precio_venta);
+		}
+		
+
+		//console.log("data ", idProducto);
+	});
+}

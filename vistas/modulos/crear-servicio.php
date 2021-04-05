@@ -67,39 +67,24 @@
                     <span class="input-group-addon"><i class="fa fa-key"></i></span>
 
                     <?php
+                    
+                      $folio = ControladorServicios::ctrMostrarUltimoFolio();
 
-                    $item = null;
-                    $valor = null;
+                      if(!$folio){
 
-                    $ventas = ControladorVentas::ctrMostrarVentas($item, $valor);
+                        echo '<input type="text" class="form-control" id="nuevoServicio" name="nuevoServicio" value="CAP-10001" readonly>';
+                    
 
-                    if(!$ventas){
+                      }else{
 
-                      echo '<input type="text" class="form-control" id="nuevaVenta" name="nuevaVenta" value="10001" readonly>';
-                  
+                        $codigo = str_replace ( 'CAP-', '', $folio["codigo"]);
+                        $resultado = intval($codigo) + 1;
+                        $resultado = "CAP-".$resultado; 
+                        echo '<input type="text" class="form-control" id="nuevoServicio" name="nuevoServicio" value="'.$resultado.'" readonly>';
 
-                    }else{
-
-                      foreach ($ventas as $key => $value) {
-                        
-                        
-                      
                       }
 
-                      $codigo = $value["codigo"] + 1;
-
-
-
-                      echo '<input type="text" class="form-control" id="nuevaVenta" name="nuevaVenta" value="'.$codigo.'" readonly>';
-                  
-
-                    }
-
-
-
                     ?>
-                    
-                   
                   
                   </div>
                 
@@ -256,7 +241,7 @@
                 </div>
 
                 <!--=====================================
-                ENTRADA DEL CODIGO
+                ENTRADA DEL Obsercacion
                 ======================================--> 
 
                 <div class="form-group">
@@ -288,8 +273,8 @@
 
         <?php
 
-          $guardarVenta = new ControladorVentas();
-          $guardarVenta -> ctrCrearVenta();
+          $guardarServicio = new ControladorServicios();
+          $guardarServicio -> ctrCrearServiciox();
           
         ?>
 
@@ -310,13 +295,13 @@
 
           <div class="box-body">
             
-            <table class="table table-bordered table-striped dt-responsive tablasVentas">
+            <table class="table table-bordered table-striped dt-responsive tablasServicios">
               
                <thead>
 
                  <tr>
                   <th style="width: 10px">#</th>
-                  <th>Imagen</th>
+                  
                   <th>Código</th>
                   <th>Descripcion</th>
                   <th>Stock</th>

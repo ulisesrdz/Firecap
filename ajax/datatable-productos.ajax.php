@@ -33,6 +33,7 @@ class TablaProductos{
 
 		  for($i = 0; $i < count($productos); $i++){
 
+			
 		  	/*=============================================
  	 		TRAEMOS LA IMAGEN
   			=============================================*/ 
@@ -69,8 +70,9 @@ class TablaProductos{
 		  	/*=============================================
  	 		TRAEMOS LAS ACCIONES
   			=============================================*/ 
-
-  			if(isset($_GET["perfilOculto"]) && $_GET["perfilOculto"] == "Especial"){
+			$bot="<div class='btn-group'><button class='btn btn-success btnPrecios' id_producto='".$productos[$i]["id"]."' codigo='".$productos[$i]["codigo"]."' ><i class='fa fa-money'></i></button></div>";
+  			
+			if(isset($_GET["perfilOculto"]) && $_GET["perfilOculto"] == "Especial"){
 
   				$botones =  "<div class='btn-group'><button class='btn btn-warning btnEditarProducto' idProducto='".$productos[$i]["id"]."' data-toggle='modal' data-target='#modalEditarProducto'><i class='fa fa-pencil'></i></button></div>"; 
 
@@ -80,19 +82,24 @@ class TablaProductos{
 
   			}
 
-		 
-		  	$datosJson .='[
-			      "'.($i+1).'",
-			      "'.$imagen.'",
-			      "'.$productos[$i]["codigo"].'",
-			      "'.$productos[$i]["descripcion"].'",
-			      "'.$categorias["nombre"].'",
-			      "'.$stock.'",
-			      "'.$productos[$i]["precio_compra"].'",
-			      "'.$productos[$i]["precio_venta"].'",
-			      "'.$productos[$i]["fecha"].'",
-			      "'.$botones.'"
-			    ],';
+			
+				
+			$datosJson .='[
+				"'.($i+1).'",
+				"'.$imagen.'",
+				"'.$productos[$i]["codigo"].'",
+				"'.$productos[$i]["descripcion"].'",
+				"'.$categorias["nombre"].'",
+				"'.$stock.'",
+				"'.$productos[$i]["precio_compra"].'",
+				"'.$productos[$i]["precio_venta"].'",
+				"'.$productos[$i]["fecha"].'",
+				"'.$bot.'",
+				"'.$botones.'"
+				],';
+
+			
+		  	
 
 		  }
 

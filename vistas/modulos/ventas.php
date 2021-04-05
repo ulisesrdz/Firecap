@@ -4,7 +4,7 @@
     
     <h1>
       
-      Administrar Ventas
+      Administrar Cotizaciones
     
     </h1>
 
@@ -12,7 +12,7 @@
       
       <li><a href="inicio"><i class="fa fa-dashboard"></i> Inicio</a></li>
       
-      <li class="active">Administrar Ventas</li>
+      <li class="active">Administrar Cotizaciones</li>
     
     </ol>
 
@@ -28,7 +28,7 @@
             
             <button class="btn btn-primary" >
               
-              Agregar Ventas
+              Crear Cotizacion
 
             </button>
 
@@ -45,18 +45,16 @@
 
       <div class="box-body">
         
-       <table class="table table-bordered table-striped dt-responsive tablas">
-         
+       <!-- <table class="table table-bordered table-striped dt-responsive tablas"> -->
+       <table class="table table-bordered table-striped dt-responsive tablas" width="100%">
         <thead>
          
          <tr>
            
            <th style="width:10px">#</th>
-           <th>Cdigo Factura</th>
-           <th>Cliente</th>
-           <th>Vendedor</th>
-           <th>Forma de Pago</th>
-           <th>Neto</th>
+           <th style="width:25px">Num Documento</th>
+           <th>Cliente</th>           
+           <th>Tipo Documento</th>           
            <th>Total</th> 
            <th>Fecha</th>
            <th>Acciones</th>
@@ -100,18 +98,17 @@
 
                       echo '<td>'.$respuestaCliente["nombre"].'</td>';
 
-                      $itemUsuario = "id";
-                      $valorUsuario = $value["id_vendedor"];
+                     
+                      if($value["tipoDocumento"]=='C'){
+                        echo '<td>Cotizacion</td>';
+                      }else if($value["tipoDocumento"]=='V'){
+                        echo'<td>Nota Venta</td>';
+                      }
+                      
 
-                      $respuestaUsuario = ControladorUsuarios::ctrMostrarUsuarios($itemUsuario, $valorUsuario);
+                      
 
-                      echo '<td>'.$respuestaUsuario["nombre"].'</td>
-
-                      <td>'.$value["metodo_pago"].'</td>
-
-                      <td>'.number_format($value["neto"],2).'</td>
-
-                      <td>'.number_format($value["total"],2).'</td>
+                      echo '<td>'.number_format($value["total"],2).'</td>
 
                       <td>'.$value["fecha"].'</td>            
 
@@ -119,7 +116,7 @@
 
                         <div class="btn-group">
                             
-                          <button class="btn btn-info btnImprimirFactura" codigoVenta="'.$value["codigo"].'"><i class="fa fa-print"></i></button>
+                          <button class="btn btn-info btnImpimirDocto" codigoVenta="'.$value["codigo"].'" tipoDocto="'.$value["tipoDocumento"].'"><i class="fa fa-print"></i></button>
 
                           <button class="btn btn-warning btnEditarVenta" idVenta="'.$value["id"].'"><i class="fa fa-pencil"></i></button>
 

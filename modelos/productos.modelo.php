@@ -9,9 +9,36 @@ class ModeloProductos{
 	 =====================================*/
 	 static public function mdlMostrarProductos($tabla, $item, $valor, $orden){
 
-	 	if($item != null)
+		if($item == 'ok'){
+			$stmt = Conexion::conectar()->prepare("SELECT pr.* FROM productos pr JOIN categorias c on c.id=pr.id_categoria WHERE nombre='Servicios' ORDER BY pr.id ASC");		 	
+
+			$stmt -> execute();
+
+			return $stmt -> fetchAll();
+		}
+		else if($item == 'id_Categoria')
 	 	{
-	 		$stmt = Conexion::conectar()->prepare("SELECT * FROM  $tabla where $item = :$item order by $orden desc" );
+	 		$stmt = Conexion::conectar()->prepare("SELECT id,codigo,descripcion,stock,precio_venta FROM  $tabla where $item = :$item order by $orden ASC" );
+	 	
+	 		$stmt -> bindParam(":".$item,$valor, PDO::PARAM_STR);
+
+	 		$stmt -> execute();
+
+	 		return $stmt -> fetchAll();
+	 	}
+	 	else if($item == 'id')
+	 	{
+	 		$stmt = Conexion::conectar()->prepare("SELECT * FROM  $tabla where $item = $valor order by $orden ASC" );
+	 	
+	 		$stmt -> bindParam(":".$item,$valor, PDO::PARAM_STR);
+
+	 		$stmt -> execute();
+
+	 		return $stmt -> fetch();
+	 	}
+		else if($item != null)
+	 	{
+	 		$stmt = Conexion::conectar()->prepare("SELECT * FROM  $tabla where id_Categoria = :$item order by $orden ASC" );
 	 	
 	 		$stmt -> bindParam(":".$item,$valor, PDO::PARAM_STR);
 
@@ -20,7 +47,7 @@ class ModeloProductos{
 	 		return $stmt -> fetch();
 	 	}
 	 	else{
-	 		$stmt = Conexion::conectar()->prepare("SELECT * FROM  $tabla ORDER BY $orden DESC");		 	
+	 		$stmt = Conexion::conectar()->prepare("SELECT * FROM  $tabla ORDER BY $orden ASC");		 	
 
 		 	$stmt -> execute();
 
@@ -31,6 +58,31 @@ class ModeloProductos{
 
 	 	$stmt = null;
 	 }
+
+	 static public function mdlMostrarServicios($tabla, $item, $valor, $orden){
+
+		if($item != null)
+		{
+			$stmt = Conexion::conectar()->prepare("Select pr.id, codigo, descripcion, stock, nombre FROM productos pr JOIN categorias c on c.id=pr.id_categoria WHERE nombre='Servicios' AND id=:id ORDER BY pr.id ASC;" );
+		
+			$stmt -> bindParam(":".$item,$valor, PDO::PARAM_STR);
+
+			$stmt -> execute();
+
+			return $stmt -> fetch();
+		}
+		else{
+			$stmt = Conexion::conectar()->prepare("Select pr.id,codigo,descripcion,stock,nombre FROM productos pr JOIN categorias c on c.id=pr.id_categoria WHERE nombre='Servicios' ORDER BY pr.id ASC;");		 	
+
+			$stmt -> execute();
+
+			return $stmt -> fetchAll();
+		}
+
+		$stmt -> close();
+
+		$stmt = null;
+	}
 
 	  /*====================================
 				Crear Productos
@@ -94,6 +146,30 @@ class ModeloProductos{
 
 	 }
 
+	 static public function MdlAbastecerProductos($tabla, $datos){
+		$stmt = Conexion::conectar()->prepare("UPDATE $tabla SET  stock = :stock, precio_venta = :precio_venta, id_usuario = :id_usuario WHERE id = :id");
+
+	   $stmt -> bindParam(":stock", $datos["stock"], PDO::PARAM_STR);
+	   $stmt -> bindParam(":id_usuario", $datos["id_usuario"], PDO::PARAM_STR);  
+	   $stmt -> bindParam(":precio_venta", $datos["precio_venta"], PDO::PARAM_STR);
+	   $stmt -> bindParam(":id", $datos["id"], PDO::PARAM_STR);
+	   
+	      
+	   if( $stmt -> execute() ){
+
+		   return "ok";	
+
+	   }else{
+
+		   return "error";
+	   
+	   }
+
+	   $stmt->close();
+	   
+	   $stmt = null;
+
+	}
 	 /*====================================
 		Borrar PRoductos
 	 =====================================*/
@@ -159,6 +235,32 @@ class ModeloProductos{
 	 	$stmt = null;
 
 	 }
+
+	 static public function mdlAuditarMovto($tabla, $datos){
+		$stmt = Conexion::conectar()->prepare("INSERT INTO $tabla (id_producto, id_usuario,cantidad, precio_venta) VALUES (:id_producto, :id_usuario, :cantidad, :precio_venta) ");
+
+	   $stmt -> bindParam(":id_producto", $datos["id_producto"], PDO::PARAM_STR);
+	   $stmt -> bindParam(":id_usuario", $datos["id_usuario"], PDO::PARAM_STR);
+	   $stmt -> bindParam(":cantidad", $datos["cantidad"], PDO::PARAM_STR);
+	   $stmt -> bindParam(":precio_venta", $datos["precio_venta"], PDO::PARAM_STR);
+	   
+	   
+		   
+	   if( $stmt -> execute() ){
+
+		   return "ok";	
+
+	   }else{
+
+		   return "error";
+	   
+	   }
+
+	   $stmt->close();
+	   
+	   $stmt = null;
+
+	}
 
 
 }

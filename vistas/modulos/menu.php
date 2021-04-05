@@ -107,13 +107,8 @@
 
 						</a>
 
-					</li>';
-
-					
-
-					
-
-				
+					</li>
+					';
 
 				echo '</ul>
 
@@ -140,10 +135,10 @@
 
 			echo '<li>
 
-				<a href="mail">
+				<a href="ListaBitacora">
 
 					<i class="fa fa-users"></i>
-					<span>Enviar Correo</span>
+					<span>Bitacora de Venta</span>
 
 				</a>
 
@@ -193,6 +188,17 @@
 							
 							<i class="fa fa-circle-o"></i>
 							<span>Administrar ventas</span>
+
+						</a>
+
+					</li>
+					
+					<li>
+
+						<a href="crear-cotizacion">
+							
+							<i class="fa fa-circle-o"></i>
+							<span>Crear Cotizacion</span>
 
 						</a>
 
@@ -381,7 +387,7 @@
 					</li>
 					<li>
 
-						<a href="crear-compras">
+						<a href="abastecerInventario">
 							
 							<i class="fa fa-circle-o"></i>
 							<span>Abastecer</span>

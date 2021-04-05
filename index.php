@@ -10,7 +10,8 @@ require_once "controladores/compras.controlador.php";
 require_once "controladores/clientes.controlador.php";
 require_once "controladores/proveedores.controlador.php";
 require_once "controladores/servicios.controlador.php";
-
+require_once "controladores/precios.controlador.php";
+require_once "controladores/bitacora.controlador.php";
 
 require_once "modelos/usuarios.modelo.php";
 require_once "modelos/categorias.modelo.php";
@@ -20,6 +21,7 @@ require_once "modelos/compras.modelo.php";
 require_once "modelos/clientes.modelo.php";
 require_once "modelos/proveedores.modelo.php";
 require_once "modelos/servicios.modelo.php";
-
+require_once "modelos/precios.modelo.php";
+require_once "modelos/bitacora.modelo.php";
 $plantilla = new ControladorPlantilla();
 $plantilla -> ctrPlantilla();

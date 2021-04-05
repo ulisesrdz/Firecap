@@ -3,6 +3,9 @@
 require_once "../controladores/productos.controlador.php";
 require_once "../modelos/productos.modelo.php";
 
+require_once "../controladores/categorias.controlador.php";
+require_once "../modelos/categorias.modelo.php";
+
 
 class TablaProductosVentas{
 
@@ -58,17 +61,28 @@ class TablaProductosVentas{
  	 		TRAEMOS LAS ACCIONES
   			=============================================*/ 
 
-		  	$botones =  "<div class='btn-group'><button class='btn btn-primary agregarProducto recuperarBoton' idProducto='".$productos[$i]["id"]."'>Agregar</button></div>"; 
+		  	$botones =  "<div class='btn-group'><button class='btn btn-primary agregarVProducto recuperarBoton' idProducto='".$productos[$i]["id"]."'>Agregar</button></div>"; 
 
-		  	$datosJson .='[
-			      "'.($i+1).'",
-			      "'.$imagen.'",
-			      "'.$productos[$i]["codigo"].'",
-			      "'.$productos[$i]["descripcion"].'",
-			      "'.$stock.'",
-			      "'.$botones.'"
-			    ],';
+			/*=============================================
+ 	 			TRAEMOS LA CATEGORÍA
+  			=============================================*/ 
+			  $item = "id";
+		  	$valor = $productos[$i]["id_Categoria"];
 
+		  	$categorias = ControladorCategorias::ctrMostrarCategorias($item, $valor);
+			 
+
+			if($categorias['nombre'] !='Servicios'){
+	
+				$datosJson .='[
+					"'.($i+1).'",
+					"'.$imagen.'",
+					"'.$productos[$i]["codigo"].'",
+					"'.$productos[$i]["descripcion"].'",
+					"'.$stock.'",
+					"'.$botones.'"
+					],';
+			}
 		  }
 
 		  $datosJson = substr($datosJson, 0, -1);

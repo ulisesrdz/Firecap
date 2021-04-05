@@ -2,24 +2,94 @@
 
 
 class ControladorServicios{
-/*=============================
-Ingreso de Servicio
-==============================*/
 
-	static public function ctrCrearServicio()
-	{
 
-		if(isset($_POST["nuevaServicio"]))
-		{
-			if(preg_match('/^[a-zA-Z0-9 ]+$/', $_POST["nuevaServicio"])){
+	/*=============================
+		Crear Servicio
+	==============================*/
 
-				$tabla = "servicios";
+	static public function ctrCrearServiciox(){
 
-				$datos= $_POST["nuevaCategoria"];
+		if(isset($_POST["nuevoServicio"])){
 
-				$respuesta = ModeloCategorias::mdlCrearCategoria($tabla, $datos);
+				/*=============================
+					Actializar las compras del cliente y reducir el STOCK, aumenta Ventas
+				  ==============================*/
 
-				if($respuesta == "ok"){
+				  $listaProductos = json_decode($_POST["listaProductos"], true);
+
+
+				  $totalProductosComprados = array();
+
+				  //var_dump($listaProductos);
+				  foreach ($listaProductos as $key => $value) {
+
+				  	array_push($totalProductosComprados, $value["cantidad"]);
+				  	
+				  	$tablaProductos = "productos";
+
+				  	$item = "id";
+				  	$valor = $value["id"];
+				  	$orden = "id";
+
+				  	$traerProductos = ModeloProductos::mdlMostrarProductos($tablaProductos, $item, $valor,$orden);
+
+				  	//var_dump($traerProductos);
+
+				  	$item1a = "ventas";
+				  	$valor1a = $value["cantidad"] +  $traerProductos["ventas"];
+
+				  	$nuevasVentas = ModeloProductos::mdlActualizarProductos($tablaProductos, $item1a, $valor1a, $valor);
+
+				  	$item1b = "stock";
+				  	$valor1b = $value["stock"];
+
+				  	$nuevoStock = ModeloProductos::mdlActualizarProductos($tablaProductos, $item1b, $valor1b, $valor);
+				  }
+
+
+				  $tablaClientes = "clientes";
+
+				  $item = "id";
+				  $valor = $_POST["seleccionarCliente"];
+
+				  $traerCliente = ModeloClientes::mdlMostrarClientes($tablaClientes, $item , $valor);
+
+				  $item1 = "compras";
+				  $valor1 = array_sum($totalProductosComprados) + $traerCliente["compras"];
+
+				  $comprasCliente = ModeloClientes::mdlActualizarClientes($tablaClientes, $item1, $valor1, $valor);
+
+				  $item1b = "ultima_compra";
+
+				  $fecha = date('Y-m-d');
+				  $hora = date('H:i:s');
+
+				  $valor1b = $fecha.' '.$hora;
+
+				    $comprasCliente = ModeloClientes::mdlActualizarClientes($tablaClientes, $item1b, $valor1b, $valor);
+
+				  	/*=============================
+							Guardar la Compra
+					==============================*/
+
+					$tabla = "ventas";
+
+					$datos = array("id_cliente" => $_POST["seleccionarCliente"],
+									"id_vendedor" => $_POST["idVendedor"],
+									"codigo" => $_POST["nuevoServicio"],
+									"productos" => $_POST["listaProductos"],
+									"impuesto" => $_POST["nuevoPrecioImpuesto"],
+									"neto" => $_POST["nuevoPrecioNeto"],
+									"total" => $_POST["totalVenta"],
+									"observaciones" => $_POST["nuevaObservacion"],
+									"metodo_pago" => $_POST["listaMetodoPago"]);
+
+								
+
+					$respuesta = ModeloServicios::mdlIngresarServicio($tabla, $datos);
+
+					if($respuesta == "ok"){
 
 						echo '<script>
 
@@ -42,52 +112,32 @@ Ingreso de Servicio
 							});
 				
 
-					</script>';
+							</script>';
 					}
-
-			}
-			else{
-
-						echo '<script>
-
-							swal({
-
-								type: "error",
-								title: "El campo no puede ir Vacio o llevar caracteres especiales!",
-								showConfirmButton: true,
-								confirmButtonText: "Cerrar",
-								closeOnConfirm: false
-
-							}).then((result)=>{
-
-								if(result.value){
-								
-									window.location = "servicios";
-
-								}
-
-							});
-				
-
-					</script>';
-				
-
-				}
-
 		}
+
 	}
+
 
 	/*=============================
 		Mostrar Servicio
 	==============================*/
 	static public function ctrMostrarServicios($item,$valor){
 
-		$tabla = "servicios";
+		$tabla = "ventas";
 
 		$respuesta = ModeloServicios::mdlMostrarServicios($tabla,$item,$valor);
 
 		return $respuesta;
 
+	}
+
+	static public function ctrMostrarUltimoFolio(){
+		
+		$respuesta = ModeloServicios::mdlMostrarUltimoFolio();
+
+		return $respuesta;
+        
 	}
 
 	/*=============================
@@ -169,7 +219,7 @@ Ingreso de Servicio
 	}
 
 	/*=============================
-		Editar Servicios
+		Borrar Servicios
 	==============================*/
 
 	static public function ctrBorrarServicio(){

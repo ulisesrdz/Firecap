@@ -3,13 +3,12 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Enviar Mail
-        
+        Bitacora de Vendedores        
       </h1>
       <ol class="breadcrumb">
         <li><a href="inicio"><i class="fa fa-dashboard"></i> Inicio</a></li>
         
-        <li class="active">Enviar Mail</li>
+        <li class="active">Bitacora</li>
       </ol>
     </section>
 
@@ -17,247 +16,332 @@
     <section class="content">
 
       <!-- Default box -->
-      <div class="box">
-        <div class="box-header with-border">
-          
-              <button class="btn btn-primary" data-toggle="modal" data-target="#modalAgregarCliente">
-                
-                Agregar Clientes
-              
-              </button>
-          
-         
-        </div>
-        <div class="box-body">
-         
-        <div class="container">
+      	<div class="box">
+			
+			<div class="box-header with-border">
+			
+				<button class="btn btn-primary btnRegresarLista" >                
+					Regresar              
+				</button>          
+			
+			</div>
+		
+			
+			<div class="container">
 
-        <?php
-error_reporting(0);
-$msgerror = '';
-$msgsuccess='';
+					<body>
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+						<div class="container">
+							<div class="page-header">
+								<h1>Crear Bitacora de cliente</h1>      
+							</div>
 
-if ($_POST['mailto'] == "" || $_POST['mailfrom'] == "" || $_POST['mailsubject'] == "" || $_POST['firstname'] == "" || $_POST['lastname'] == "" || $_POST['description'] == "") {
+							<div class="form"> 
+								
+								<form class="form-horizontal" action="" method="post">
+								
+								<!--=====================================
+									ENTRADA DEL CODIGO
+									======================================--> 
 
-	$msgerror = 'Por favor llene todo el campo';
-} else {
+									<div class="form-group">
+									
+										<div class="col-sm-10">
+											
+											<div class="input-group">
+												
+												<span class="input-group-addon"><i class="fa fa-key"></i></span>
 
-/**/
-$mailto = $_POST['mailto'];
-$mailfrom = $_POST['mailfrom'];
-$mailsubject = $_POST['mailsubject'];
-$firstname = $_POST['firstname'];
-$lastname = $_POST['lastname'];
-$description = $_POST['description'];
+												<?php
 
+												$item = null;
+												$valor = null;
 
-$description = wordwrap($description, 100, "<br />");
-/* rompe el contenido de la descripción cada 100 caracteres después. */
+												//$ventas = ControladorVentas::ctrMostrarVentas($item, $valor);
+												$bitacora = ControladorBitacoraVentas::ctrMostrarBitacora($item, $valor);
 
+												if(!$bitacora){
 
-$content = '';
+												echo '<input type="text" class="form-control" id="nuevaVenta" name="nuevaVenta" value="FIRE-10001" readonly>';
+											
 
-$content .= '
-		<style>
-		table {
-		border-collapse: collapse;
-		}
+												}else{
 
-		table{
-		 width:800px;
-		 margin:0 auto;
-		}
+												foreach ($bitacora as $key => $value) {
+													
+													
+												
+												}
 
-		td{
-		border: 1px solid #e2e2e2;
-		padding: 10px; 
-		max-width:520px;
-		word-wrap: break-word;
-		}
-
-
-		</style>
-
-		';
-/* Tu css */
+												$codigo = 'FIRE' + $value["codigo"] + 1;
 
 
 
-$content .= '<table>';
+												echo '<input type="text" class="form-control" id="nuevaFolio" name="nuevaFolio" value="'.$codigo.'" readonly>';
+											
 
-$content .= '<tr><td>Email A</td> <td>' . $mailto . '</td> </tr>';
-$content .= '<tr><td>Mail De</td>   <td>' . $mailfrom . '</td> </tr>';
-$content .= '<tr><td>Asunto Email</td>   <td>' . $mailsubject . '</td> </tr>';
-$content .= '<tr><td>Nombres</td>   <td>' . $firstname . '</td> </tr>';
-$content .= '<tr><td>Apellidos</td>   <td>' . $lastname . '</td> </tr>';
-$content .= '<tr><td>Descripcion</td>   <td>' . $description . '</td> </tr>';
-
-$content .= '</table>';
-
-// LLmamos a la biblioteca para la creacion del PDF
-require_once '../../extensiones/html2pdf/html2pdf.class.php';
-
-// Declaramos el formato del documento PDF
-$html2pdf = new HTML2PDF('P', 'A4', 'fr');
-
-$html2pdf->setDefaultFont('Arial');
-$html2pdf->writeHTML($content, isset($_GET['vuehtml']));
-
-$html2pdf = new HTML2PDF('P', 'A4', 'fr');
-$html2pdf->WriteHTML($content);
-
-
-$to = $mailto;
-$from = $mailfrom;
-$subject = $mailsubject;
-
-$message = "<p>Consulte el archivo adjunto.</p>";
-$separator = md5(time());
-$eol = PHP_EOL;
-$filename = "pdf-documento.pdf";
-$pdfdoc = $html2pdf->Output('', 'S');
-$attachment = chunk_split(base64_encode($pdfdoc));
+												}
 
 
 
+												?>
+												
+											
+											
+											</div>
 
-$headers = "From: " . $from . $eol;
-$headers .= "MIME-Version: 1.0" . $eol;
-$headers .= "Content-Type: multipart/mixed; boundary=\"" . $separator . "\"" . $eol . $eol;
+										</div>		
 
-$body = '';
+									</div>
 
-$body .= "Content-Transfer-Encoding: 7bit" . $eol;
-$body .= "This is a MIME encoded message." . $eol; //had one more .$eol
+									<!--=====================================
+									ENTRADA DEL CLIENTE
+									======================================--> 
 
+									<div class="form-group">
+										
+										<div class="col-sm-10">
 
-$body .= "--" . $separator . $eol;
-$body .= "Content-Type: text/html; charset=\"iso-8859-1\"" . $eol;
-$body .= "Content-Transfer-Encoding: 8bit" . $eol . $eol;
-$body .= $message . $eol;
+											<div class="input-group">
+											
+												<span class="input-group-addon"><i class="fa fa-users"></i></span>
+												
+												<select class="form-control" id="seleccionarCliente" name="seleccionarCliente" required>
 
+												<option value="">Seleccionar cliente</option>
 
-$body .= "--" . $separator . $eol;
-$body .= "Content-Type: application/octet-stream; name=\"" . $filename . "\"" . $eol;
-$body .= "Content-Transfer-Encoding: base64" . $eol;
-$body .= "Content-Disposition: attachment" . $eol . $eol;
-$body .= $attachment . $eol;
-$body .= "--" . $separator . "--";
+												<?php
 
-if (mail($to, $subject, $body, $headers)) {
+													$item = null;
+													$valor = null;
 
-	$msgsuccess = 'Email enviado Correctamente';
-} else {
+													$categorias = ControladorClientes::ctrMostrarCliente($item, $valor);
 
-	$msgerror = 'Email no ha sido enviado';
-}
+													foreach ($categorias as $key => $value) {
+													
+													echo '<option value="'.$value["id"].'">'.$value["nombre"].'</option>';
+													}
 
-}
-}
-?>
+												?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<title>BaulPHP - Crear PDF dinámico y enviar como archivo adjunto por Email</title>
-	<meta charset="utf-8">
+												</select>
+												
+												<span class="input-group-addon"><button type="button" class="btn btn-default btn-xs" data-toggle="modal" data-target="#modalAgregarClientes" data-dismiss="modal">Agregar cliente</button></span>
+											</div>
+										</div>
+									
+									</div>
 
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-</head>
-<body>
+									<!--=====================================
+									ENTRADA DEL VENDEDOR
+									======================================-->
+								
+									<div class="form-group">
+										
+										<div class="col-sm-10">
+											
+											<div class="input-group">
+												
+												<span class="input-group-addon"><i class="fa fa-user"></i></span> 
 
-	<div class="container">
-		<div class="page-header">
-			<h1>Crear PDF dinámico y enviar adjunto por Email</h1>      
+												<input type="text" class="form-control" id="nuevoVendedor" value="<?php echo $_SESSION["nombre"]; ?>" readonly>
+
+												<input type="hidden" name="idVendedor" value="<?php echo $_SESSION["id"]; ?>">
+
+											</div>
+										
+										</div>
+									
+									</div> 
+
+									<!--=====================================
+									ENTRADA CONTACTO
+									======================================-->
+								
+									<div class="form-group">
+										
+										<div class="col-sm-10">
+											
+											<div class="input-group">
+												
+												<span class="input-group-addon"><i class="fa fa-user"></i></span> 
+
+												<input type="text" class="form-control" id="nuevoVendedor" placeholder="Nombre de Contacto">							
+
+											</div>
+										
+										</div>
+									
+									</div> 
+
+									<!--=====================================
+									ENTRADA TELEFONO CONTACTO
+									======================================-->
+								
+									<div class="form-group">
+										
+										<div class="col-sm-10">
+											
+											<div class="input-group">
+												
+												<span class="input-group-addon"><i class="fa fa-user"></i></span> 
+
+												<input type="text" class="form-control" id="nuevoVendedor" placeholder="Telefono de Contacto">							
+
+											</div>
+										
+										</div>
+									
+									</div> 
+
+									<!--=====================================
+									ENTRADA DEL CODIGO
+									======================================--> 
+
+									<div class="form-group">
+
+										<div class="col-sm-10">
+										
+											<div class="input-group">
+												
+												<span class="input-group-addon"><i class="fa fa-list"></i></span>
+
+												<!-- <input type="text" class="form-control" id="nuevaObservacion" name="nuevaObservacion" placeholder="Observaciones"> -->
+												<textarea id="nuevaObservacion" class="form-control" name="nuevaObservacion" rows="10" style="resize:none" placeholder="Observaciones"></textarea>
+
+											</div>
+
+										</div>
+									
+									</div>
+
+									<div class="form-group">        
+										
+										<div class="col-sm-offset-9 col-sm-10">
+											<button type="submit" class="btn btn-success">Guardar</button>
+											<!-- <button type="submit" class="btn btn-primary">Guardar Cliente</button> -->
+										</div>
+									
+									</div>
+								
+								</form>
+
+								<?php
+
+									$crearBitacora = new ControladorBitacoraVentas();
+									$crearBitacora -> ctrInsertarBitacora();
+								?>
+
+							</div>
+
+							
+
+						</div>
+
+						
+					</body>
+					
+			</div>
+
 		</div>
-
-<?php
-if ($msgerror) {
-?>
-			<div class="alert alert-danger"><?php echo $msgerror; ?></div>
-		<?php } else if ($msgsuccess) { ?>
-			<div class="alert alert-success"><?php echo $msgsuccess; ?></div>
-		<?php } ?>
-
-		<div class="form"> 
-			<form class="form-horizontal" action="" method="post">
-
-				<div class="form-group">
-					<label class="control-label col-sm-2" for="mailto">Email A:</label>
-					<div class="col-sm-10">
-						<input type="email" class="form-control" id="mailto" placeholder="Ingrese Email A" name="mailto" value="<?php echo $_POST['mailto']; ?>">
-					</div>
-				</div>
-
-				<div class="form-group">
-					<label class="control-label col-sm-2" for="mailfrom">Mail De:</label>
-					<div class="col-sm-10">
-						<input type="email" class="form-control" id="mailfrom" placeholder="Ingrese Email De" name="mailfrom" value="<?php echo $_POST['mailfrom']; ?>">
-					</div>
-				</div>
-
-
-				<div class="form-group">
-					<label class="control-label col-sm-2" for="">Asunto Email:</label>
-					<div class="col-sm-10">
-						<input type="text" class="form-control" id="mailsubject" placeholder="Ingrese Asunto Email" name="mailsubject" value="<?php echo $_POST['mailsubject']; ?>">
-					</div>
-				</div>
-
-
-				<div class="form-group">
-					<label class="control-label col-sm-2" for="firstname">Nombres:</label>
-					<div class="col-sm-10">
-						<input type="text" class="form-control" id="firstname" placeholder="Ingrese Nombres" name="firstname" value="<?php echo $_POST['firstname']; ?>">
-					</div>
-				</div>
-
-
-
-				<div class="form-group">
-					<label class="control-label col-sm-2" for="lastname">Apellidos:</label>
-					<div class="col-sm-10">
-						<input type="text" class="form-control" id="lastname" placeholder="Ingrese Apellidos" name="lastname" value="<?php echo $_POST['lastname']; ?>">
-					</div>
-				</div> 
-
-
-				<div class="form-group">
-					<label class="control-label col-sm-2" for="description">Descripcion:</label>
-					<div class="col-sm-10">
-						<textarea placeholder="Ingrese Descripcion" class="form-control" id="description"  name="description" style=" height: 268px;"><?php echo $_POST['description']; ?></textarea>
-					</div>
-				</div> 
-
-
-
-				<div class="form-group">        
-					<div class="col-sm-offset-2 col-sm-10">
-						<button type="submit" class="btn btn-success">Crear y Enviar PDF</button>
-					</div>
-				</div>
-			</form>
-		</div>
-
-
-
-	</div>
-
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
-</body>
-</html> 
-
-          </div>
-        
-       
-      </div>
-    
 
     </section>
     
   </div>
+
+  
+<!--=====================================
+          Agregar Clientes Ventana  Modal
+======================================-->
+ 
+<div id="modalAgregarClientes" class="modal fade" role="dialog">
+  
+  <div class="modal-dialog">
+    
+	<div class="modal-content">
+
+			<!--Formulario-->
+			<form role="form" method="post" >
+
+				<!--=====================================
+							CABEZA DEL MODAL
+					======================================-->
+					<div class="modal-header" style="background:#3c8dbc; color:white">
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+						<h4 class="modal-title">Agregar Clientes</h4>
+					</div>
+
+					<!--=====================================
+							CUERPO DEL MODAL
+					======================================-->
+					
+					<div class="modal-body">
+						
+						<div class="box-body">						
+
+							<!-- Entrada Nombre-->
+							<div class="form-group"> 
+								<div class="input-group">
+									<span class="input-group-addon"><i class="fa fa-user"></i></span>
+									<input type="text" class="form-control input-lg" name="nuevoCliente" placeholder="Ingresar Nombre" required>
+								</div>
+							</div>
+
+							
+							<!-- Entrada Email-->
+
+							<div class="form-group"> 
+								<div class="input-group">
+									<span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+									<input type="email" class="form-control input-lg" name="nuevoEmail" placeholder="Ingresar Email" required>
+								</div>
+							</div>
+
+							<!-- Entrada Telefono-->
+
+							<div class="form-group"> 
+								<div class="input-group">
+									<span class="input-group-addon"><i class="fa fa-phone"></i></span>
+									<input type="text" class="form-control input-lg" name="nuevoTelefono" placeholder="Ingresar Telefono" data-inputmask="'mask':'(999) 999-9999'" data-mask required>
+								</div>
+							</div>
+
+							<!-- Entrada Direccion-->
+
+							<div class="form-group"> 
+								<div class="input-group">
+									<span class="input-group-addon"><i class="fa fa-lock"></i></span>
+									<input type="text" class="form-control input-lg" name="nuevoDireccion" placeholder="Ingresar Direccion" required>
+								</div>
+							</div>
+
+						
+
+						</div>
+					</div>
+					<!--=====================================
+							PIE DEL MODAL
+					======================================-->
+
+					<div class="modal-footer">
+
+						<button type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</button>
+
+						<button type="submit" class="btn btn-primary">Guardar Cliente</button>
+
+					</div>
+
+			</form>
+
+			<?php
+
+				$crearCliente = new ControladorClientes();
+				$crearCliente -> ctrCrearClienteBitacora();
+			?>
+
+    </div>
+
+  </div>
+
+</div>
 

@@ -158,7 +158,7 @@
                 BOTÓN PARA AGREGAR PRODUCTO
                 ======================================-->
 
-                <button type="button" class="btn btn-default hidden-lg btnAgregarProducto">Agregar producto</button>
+                 <button type="button" class="btn btn-default hidden-lg btnAgregarProducto">Agregar producto</button>
 
                 <hr>
 
@@ -333,8 +333,8 @@
   <div class="modal-dialog">
     <div class="modal-content">
 
-<!--Formulario-->
-<form role="form" method="post" >
+      <!--Formulario-->
+      <form role="form" method="post" >
 
       <!--=====================================
                   CABEZA DEL MODAL
@@ -422,12 +422,12 @@
        
         
       
-    </form>
-      <?php
+      </form>
+        <?php
 
-          $crearCliente = new ControladorClientes();
-          $crearCliente -> ctrCrearCliente();
-      ?>
+            $crearCliente = new ControladorClientes();
+            $crearCliente -> ctrCrearCliente();
+        ?>
 
     </div>
   </div>

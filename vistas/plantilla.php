@@ -45,6 +45,11 @@ session_start();
 <!-- Morris chart -->
 <link rel="stylesheet" href="vistas/bower_components/morris.js/morris.css">
 
+<link .rel="stylesheet" 
+  .skin-blue .main-header .navbar {
+    background-color: #b73636;
+}>
+
 <!--==========================================
   Pluggin de JAVASCRIPT
   ===========================================-->
@@ -101,7 +106,6 @@ session_start();
 <body class="hold-transition skin-blue sidebar-collapse sidebar-mini login-page">
 <!-- Site wrapper -->
 
-
   
 
   <!-- =============================================== -->
@@ -139,13 +143,18 @@ if(isset($_SESSION["iniciarSesion"]) && $_SESSION["iniciarSesion"]="ok"){
           $_GET["ruta"] == "ventas" ||
           $_GET["ruta"] == "crear-ventas" ||
           $_GET["ruta"] == "crear-compras" ||
+          $_GET["ruta"] == "crear-cotizacion" ||
           $_GET["ruta"] == "crear-ordencompra" ||
           $_GET["ruta"] == "crear-servicio" ||
           $_GET["ruta"] == "compras" ||
           $_GET["ruta"] == "editar-ventas" ||
           $_GET["ruta"] == "reportes"||
           $_GET["ruta"] == "mail"||
+          $_GET["ruta"] == "ListaBitacora"||
+          $_GET["ruta"] == "bitacora"||
           $_GET["ruta"] == "servicios"||
+          $_GET["ruta"] == "abastecerInventario"||
+          $_GET["ruta"] == "precios-productos"||
           $_GET["ruta"] == "salir" ) {
         include "modulos/".$_GET["ruta"].".php";
       }
@@ -183,5 +192,8 @@ if(isset($_SESSION["iniciarSesion"]) && $_SESSION["iniciarSesion"]="ok"){
 <script src="vistas/js/ventas.js"></script>
 <script src="vistas/js/compras.js"></script>
 <script src="vistas/js/reportes.js"></script>
+<script src="vistas/js/precios-productos.js"></script>
+<script src="vistas/js/bitacora.js"></script>
+<script src="vistas/js/servicio.js"></script>
 </body>
 </html>

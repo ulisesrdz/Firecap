@@ -45,6 +45,7 @@
                   <th>Precio de Compra</th>
                   <th>Precio de Venta</th>
                   <th>Agregado</th>
+                  <th>Precios Proveedor</th>
                   <th>Acciones</th>
 
                 </tr>
@@ -53,56 +54,6 @@
    <!--
             <tbody>
                 
-             <?php
-
-          $item = null;
-          $valor = null;
-          $orden = "id";
-
-          $productos = ControladorProductos::ctrMostrarProductos($item, $valor, $orden);
-
-          foreach ($productos as $key => $value) {
-           
-            echo ' <tr>
-
-                    <td>'.($key+1).'</td>';
-                    if($value["imagen"] != ""){
-                        echo '<td><img src="'.$value["imagen"].'" class="img-thumbnail" width="40px"></td>';
-                        }
-                        else{
-                          echo '<td><img src="vistas/img/productos/default/anonymous.png" class="img-thumbnail" width="40px"></td>';
-                        }
-                  echo '<td class="text-uppercase">'.$value["codigo"].'</td>
-                        <td class="text-uppercase">'.$value["descripcion"].'</td>';
-                        
-                        $item = "id";
-                        $valor = $value["id_Categoria"];
-                        $categorias = ControladorCategorias::ctrMostrarCategorias($item, $valor);
-
-                  echo '<td class="text-uppercase">'.$categorias["nombre"].'</td>
-                        <td class="text-uppercase">'.$value["stock"].'</td>
-                        <td class="text-uppercase">'.$value["precio_compra"].'</td>
-                        <td class="text-uppercase">'.$value["precio_venta"].'</td>
-                        <td class="text-uppercase">'.$value["fecha"].'</td>
-                    <td>
-
-                       <div class="btn-group">
-
-                          <button class="btn btn-warning"><i class="fa fa-pencil"></i></button> 
-                          <button class="btn btn-danger" ><i class="fa fa-times"></i></button>
-
-                      </div>  
-
-                    </td>
-
-                  </tr>';
-
-                   
-          }
-
-        ?>
-                
-
               </tbody>-->
 
             </table>
@@ -212,44 +163,16 @@
               </div>
             </div>
 
-             <!-- Entrada Precio Compra-->
+             <!-- Entrada Precio Venta-->
 
-            <div class="form-group row"> 
-              <div class="col-xs-6">
-                <div class="input-group">
-                  <span class="input-group-addon"><i class="fa fa-arrow-up"></i></span>
-                  <input type="number" class="form-control input-lg" id="nuevoPrecioCompra" name="nuevoPrecioCompra" min="0"  step="any" placeholder="Precio Compra" required>
-                
-
-                </div>
-            
-              </div>
-            <!-- Entrada Precio Venta-->
-
-              <div class="col-xs-12 col-sm-6">
-                <div class="input-group">
-                  <span class="input-group-addon"><i class="fa fa-arrow-down"></i></span>
+             <div class="form-group"> 
+              <div class="input-group">
+              <span class="input-group-addon"><i class="fa fa-arrow-down"></i></span>
                   <input type="number" class="form-control input-lg" id="nuevoPrecioVenta" name="nuevoPrecioVenta" min="0"  step="any" placeholder="Precio Venta" required>
-              
-                </div>
-                <br>
-                <div class="col-xs-12 col-sm-6">
-                    <div class="form-group">
-                      <label>
-                        <input type="checkbox" class="minimal porcentaje" checked>
-                        Utilizar porcentaje
-                      </label>
-                    </div>
-                </div>
-                <!--/*=====  Entrada Procentaje  ======*/-->
-                <div class="col-xs-6" style="padding: 0">
-                  <div class="input-group">
-                    <input type="number" class="form-control input-lg nuevoPorcentaje" min="0" value="40" required>
-                    <span class="input-group-addon"><i class="fa fa-percent"></i></span>
-                  </div>
-                </div>
               </div>
             </div>
+           
+            
 
             <!-- ENTRADA PARA SUBIR FOTO -->
 
@@ -386,9 +309,9 @@ MODAL EDITAR PRODUCTO
 
             </div>
 
-             <!-- ENTRADA PARA PRECIO COMPRA -->
+             <!-- ENTRADA PARA PRECIO COMPRA-->
 
-             <div class="form-group row">
+             <!-- <div class="form-group row">
 
                 <div class="col-xs-6">
                 
@@ -400,25 +323,27 @@ MODAL EDITAR PRODUCTO
 
                   </div>
 
-                </div>
+                </div> -->
 
                 <!-- ENTRADA PARA PRECIO VENTA -->
 
-                <div class="col-xs-6">
+                <div class="form-group">
                 
                   <div class="input-group">
                   
                     <span class="input-group-addon"><i class="fa fa-arrow-down"></i></span> 
 
-                    <input type="number" class="form-control input-lg" id="editarPrecioVenta" name="editarPrecioVenta" step="any" min="0" readonly required>
+                    <input type="number" class="form-control input-lg" id="editarPrecioVenta" name="editarPrecioVenta" step="any" min="0" required>
 
                   </div>
+
+                </div>
                 
-                  <br>
+                  <br> 
 
                   <!-- CHECKBOX PARA PORCENTAJE -->
 
-                  <div class="col-xs-6">
+                  <!-- <div class="col-xs-6">
                     
                     <div class="form-group">
                       
@@ -430,11 +355,11 @@ MODAL EDITAR PRODUCTO
 
                     </div>
 
-                  </div>
+                  </div> -->
 
                   <!-- ENTRADA PARA PORCENTAJE -->
 
-                  <div class="col-xs-6" style="padding:0">
+                  <!-- <div class="col-xs-6" style="padding:0">
                     
                     <div class="input-group">
                       
@@ -444,11 +369,11 @@ MODAL EDITAR PRODUCTO
 
                     </div>
 
-                  </div>
+                  </div> -->
 
-                </div>
+                <!-- </div>
 
-            </div>
+            </div> -->
 
             <!-- ENTRADA PARA SUBIR FOTO -->
 

@@ -7,7 +7,9 @@
 Data Table
  =================================*/
 $(".tablas").DataTable({
-
+	"deferRender": true,
+	"retrieve": true,
+	"processing": true,
 	"language": {
 
 		"sProcessing":     "Procesando...",

@@ -11,7 +11,7 @@ class ModeloVentas{
 
 	 	if($item != null)
 	 	{
-	 		$stmt = Conexion::conectar()->prepare("SELECT * FROM  $tabla where $item = :$item ORDER BY fecha ASC");
+	 		$stmt = Conexion::conectar()->prepare("SELECT * FROM  $tabla where $item = :$item AND tipoDocumento='C' ORDER BY fecha ASC");
 	 	
 	 		$stmt -> bindParam(":".$item,$valor, PDO::PARAM_STR);
 
@@ -20,7 +20,7 @@ class ModeloVentas{
 	 		return $stmt -> fetch();
 	 	}
 	 	else{
-	 		$stmt = Conexion::conectar()->prepare("SELECT * FROM  $tabla ORDER BY fecha ASC");		 	
+	 		$stmt = Conexion::conectar()->prepare("SELECT * FROM  $tabla tipoDocumento='C' ORDER BY fecha ASC");		 	
 
 		 	$stmt -> execute();
 
@@ -46,6 +46,29 @@ class ModeloVentas{
 		$stmt ->bindParam(":neto" , $datos["neto"], PDO::PARAM_STR);
 		$stmt ->bindParam(":total" , $datos["total"], PDO::PARAM_STR);
 		$stmt ->bindParam(":metodo_pago" , $datos["metodo_pago"], PDO::PARAM_STR);
+		
+		if($stmt->execute()){
+			return "ok";
+		}else{
+			return "error";
+		}
+
+		$stmt->close();
+		$stmt = null;
+
+	}
+
+	static public function mdlIngresarCotizacion($tabla, $datos){
+		$stmt = Conexion::conectar()->prepare("INSERT INTO $tabla(codigo,id_cliente,id_vendedor, productos, impuesto,neto,total,observaciones,tipoDocumento) VALUES (:codigo, :id_cliente, :id_vendedor, :productos, :impuesto,:neto,:total,:observaciones,'C')");
+
+		$stmt ->bindParam(":codigo" , $datos["codigo"], PDO::PARAM_INT);
+		$stmt ->bindParam(":id_cliente" , $datos["id_cliente"], PDO::PARAM_INT);
+		$stmt ->bindParam(":id_vendedor" , $datos["id_vendedor"], PDO::PARAM_INT);
+		$stmt ->bindParam(":productos" , $datos["productos"], PDO::PARAM_STR);
+		$stmt ->bindParam(":impuesto" , $datos["impuesto"], PDO::PARAM_STR);
+		$stmt ->bindParam(":neto" , $datos["neto"], PDO::PARAM_STR);
+		$stmt ->bindParam(":total" , $datos["total"], PDO::PARAM_STR);
+		$stmt ->bindParam(":observaciones" , $datos["observaciones"], PDO::PARAM_STR);
 		
 		if($stmt->execute()){
 			return "ok";
@@ -85,6 +108,32 @@ class ModeloVentas{
 
 	}
 
+	static public function MdlEditarStatus($tabla, $datos){
+        
+		$stmt = Conexion::conectar()->prepare("UPDATE $tabla SET  statusPago = :status, fechaEntrega=:fechaEntrega, entrega=:entrega  WHERE id = :id");
+
+        $stmt -> bindParam(":status", $datos["status"], PDO::PARAM_STR);
+		$stmt -> bindParam(":fechaEntrega", $datos["fechaEntrega"], PDO::PARAM_STR);
+		$stmt -> bindParam(":entrega", $datos["usuario"], PDO::PARAM_STR);
+        
+        $stmt -> bindParam(":id", $datos["id"], PDO::PARAM_STR);        
+           
+        if( $stmt -> execute() ){
+
+            return "ok";	
+
+        }else{
+
+            return "error";
+        
+        }
+
+        $stmt->close();
+        
+        $stmt = null;
+
+    }
+
 	static public function mdlEliminarVenta($tabla, $datos){
 		$stmt = Conexion::conectar()->prepare("DELETE FROM $tabla WHERE id = :id");
 
@@ -110,7 +159,7 @@ class ModeloVentas{
 
 		if($fechaInicial == null){
 
-			$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla ORDER BY id ASC");
+			$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE FIND_IN_SET(tipoDocumento,'C,V') ORDER BY id ASC");
 
 			$stmt->execute();
 
@@ -118,7 +167,7 @@ class ModeloVentas{
 
 		}else if($fechaInicial == $fechaFinal){
 
-			$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE fecha like '%$fechaFinal%' ");
+			$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE fecha like '%$fechaFinal%' AND tipoDocumento='V' ");
 
 			$stmt -> bindParam(":fecha", $fechaFinal, PDO::PARAM_STR);
 
@@ -138,11 +187,11 @@ class ModeloVentas{
 
 			if($fechaFinalMasUno == $fechaActualMasUno){
 
-				$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE fecha BETWEEN '$fechaInicial' AND '$fechaFinalMasUno' ");
+				$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE fecha BETWEEN '$fechaInicial' AND '$fechaFinalMasUno' AND tipoDocumento='C' ");
 
 			}else{
 
-				$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE fecha BETWEEN '$	fechaInicial' AND '$fechaFinal' ");
+				$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE fecha BETWEEN '$	fechaInicial' AND '$fechaFinal' AND tipoDocumento='C' ");
 
 			}
 
